@@ -20,4 +20,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 Route::resource('department',"DepartmentController");
-   
+   Route::post('edit/{id}',['as'=>'department.update','uses'=>'DepartmentController@update']);

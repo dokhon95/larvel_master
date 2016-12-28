@@ -63,7 +63,13 @@ class DepartmentController extends Controller {
      * @return Response
      */
     public function edit($id) {//getedit
-        //
+        //find Department by id
+        $data= Department::find($id);
+        //check id 
+        if(!$data){
+            return redirect()->route('department.index')->with(['flash_level'=>'error','flash_message' => trans('/MESSAGES.NOTDEPARTMENT')]);
+        }
+        return view('department.edit', compact('data'));
     }
 
     /**
@@ -72,8 +78,15 @@ class DepartmentController extends Controller {
      * @param  int  $id
      * @return Response
      */
-    public function update($id) {//postedit
-        //
+    public function update($id,Request $request) {//postedit
+        //find Department by id
+        $department = Department::find($id);
+        
+        $department->name = $request->name;
+        $department->phone = $request->phone;
+        
+        $department->save();
+        return redirect()->route('department.index')->with(['flash_level'=>'success','flash_message' => trans('/MESSAGES.UPDATEDEPARTMENT')]);
     }
 
     /**
@@ -83,7 +96,14 @@ class DepartmentController extends Controller {
      * @return Response
      */
     public function destroy($id) {//getdelete
-        //
+        //find by Department by id
+        $data= Department::find($id);
+        //check id
+        if(!$data){
+            return redirect()->route('department.index')->with(['flash_level'=>'error','flash_message' => trans('/MESSAGES.NOTDEPARTMENT')]);
+        }
+        $data->delete();
+        return readdir()->route('department.index')->with(['flash_level'=>'success','flash_message' => trans('/MESSAGES.DELETEDEPARTMENT')]);;
     }
 
 }
